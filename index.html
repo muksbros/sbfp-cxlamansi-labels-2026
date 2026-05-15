@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>SBFP Calamansi Juice Labels 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;600;700&display=swap');
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    font-family:'Barlow',sans-serif;
+    background:#1a3a1a;
+    padding:12px;
+  }
+
+  /* CONTROLS */
+  .controls{
+    background:#0d2b0d;color:#fff;
+    padding:10px 16px;margin-bottom:12px;
+    border-radius:5px;
+    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;
+    border:1px solid #2d6b2d;
+  }
+  .controls select{
+    font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.04em;
+    padding:6px 12px;border-radius:4px;border:1px solid #2d6b2d;cursor:pointer;
+    background:#0d2b0d;color:#fff;
+  }
+  .controls button{
+    font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.05em;
+    padding:6px 16px;border-radius:4px;border:2px solid #4caf50;
+    cursor:pointer;background:#4caf50;color:#fff;
+  }
+  .controls button:hover{background:#45a049;}
+  .ctrl-stat{color:#7bc97e;font-size:11px;}
+
+  /* TABS BAR */
+  .tab-bar{
+    display:flex;flex-direction:column;gap:6px;
+    margin-bottom:10px;
+    padding:8px;
+    background:#0d2b0d;
+    border-radius:6px;
+    border:1px solid #2d6b2d;
+  }
+  .truck-group{
+    display:flex;flex-wrap:wrap;gap:4px;align-items:center;
+    padding:5px 7px;border-radius:4px;
+  }
+  .truck-group.t1{ background:#0a1f2e; border-left:3px solid #1e88e5; }
+  .truck-group.t2{ background:#1a1a0a; border-left:3px solid #f9a825; }
+  .truck-group.t3{ background:#1a0a1a; border-left:3px solid #ab47bc; }
+  .truck-label{
+    font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;
+    text-transform:uppercase;letter-spacing:.1em;
+    white-space:nowrap;padding:2px 6px 2px 0;margin-right:2px;
+    border-right:1px solid #333;
+  }
+  .truck-group.t1 .truck-label{ color:#1e88e5; }
+  .truck-group.t2 .truck-label{ color:#f9a825; }
+  .truck-group.t3 .truck-label{ color:#ab47bc; }
+  .tab-btn{
+    font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.06em;
+    padding:4px 10px;border-radius:3px;
+    cursor:pointer;white-space:nowrap;transition:all .15s;
+  }
+  .truck-group.t1 .tab-btn{ border:1px solid #1565c0;background:#0d2744;color:#90caf9; }
+  .truck-group.t1 .tab-btn:hover{ background:#1565c0;color:#fff; }
+  .truck-group.t1 .tab-btn.active{ background:#1e88e5;color:#fff;border-color:#1e88e5; }
+  .truck-group.t2 .tab-btn{ border:1px solid #b07d00;background:#2a2000;color:#ffe082; }
+  .truck-group.t2 .tab-btn:hover{ background:#b07d00;color:#fff; }
+  .truck-group.t2 .tab-btn.active{ background:#f9a825;color:#000;border-color:#f9a825; }
+  .truck-group.t3 .tab-btn{ border:1px solid #7b1fa2;background:#21002a;color:#ce93d8; }
+  .truck-group.t3 .tab-btn:hover{ background:#7b1fa2;color:#fff; }
+  .truck-group.t3 .tab-btn.active{ background:#ab47bc;color:#fff;border-color:#ab47bc; }
+  .tab-section{display:none;}
+  .tab-section.visible{display:block;}
+
+  /* TAB HEADER */
+  .tab-header{
+    background:#163316;color:#9dd49f;
+    padding:6px 12px;margin-bottom:0;
+    border-radius:4px 4px 0 0;border-left:4px solid #4caf50;
+    font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.08em;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+  .tab-header span{color:#4caf50;}
+
+  /* DROP-OFF INFO TABLE */
+  .drop-info{
+    background:#0f1f0f;
+    border:1px solid #2d6b2d;border-top:none;
+    border-radius:0 0 4px 4px;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  .drop-info-toggle{
+    font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.08em;
+    color:#7bc97e;background:none;border:none;cursor:pointer;
+    padding:5px 12px;display:block;width:100%;text-align:left;
+    border-top:1px solid #1a4a1a;
+  }
+  .drop-info-toggle:hover{color:#fff;background:#163316;}
+  .drop-info-table-wrap{display:none;padding:0 10px 10px;}
+  .drop-info-table-wrap.open{display:block;}
+  .drop-info-table{
+    width:100%;border-collapse:collapse;
+    font-family:'Barlow Condensed',sans-serif;font-size:11px;
+  }
+  .drop-info-table th{
+    font-weight:900;text-transform:uppercase;letter-spacing:.08em;
+    color:#4caf50;font-size:10px;
+    padding:5px 8px;border-bottom:1px solid #2d6b2d;
+    text-align:left;
+  }
+  .drop-info-table th.num{text-align:right;}
+  .drop-info-table td{
+    padding:4px 8px;color:#ccc;font-size:11px;
+    border-bottom:1px solid #1a3a1a;
+  }
+  .drop-info-table td.num{text-align:right;color:#fff;font-weight:700;}
+  .drop-info-table td.cases{text-align:right;color:#7bc97e;font-weight:700;}
+  .drop-info-table td.loose-cell{text-align:right;color:#f9a825;font-weight:700;}
+  .drop-info-table tr:last-child td{border-bottom:none;}
+  .drop-info-table tr.total-row td{
+    border-top:2px solid #2d6b2d;border-bottom:none;
+    background:#163316;color:#fff;font-weight:900;font-size:12px;
+    padding:6px 8px;
+  }
+  .drop-info-table tr.total-row td.cases{color:#4caf50;}
+  .drop-info-table tr.total-row td.loose-cell{color:#f9a825;}
+  @media print{
+    .drop-info{display:none;}
+  }
+
+  /* A4 PAGE — 2 cols × 4 rows = 8 labels */
+  .page{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    margin:0 auto 12px;
+    padding:4mm;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:repeat(4,1fr);
+    gap:2.5mm;
+    page-break-after:always;
+    break-after:page;
+  }
+
+  /* LABEL */
+  .lbl{
+    border:1.5px solid #000;
+    border-radius:2px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+    background:#fff;
+    min-height:0;
+  }
+
+  /* TOP BANNER — white bg with DepEd logo */
+  .lbl-banner{
+    background:#fff;color:#000;
+    display:flex;align-items:center;justify-content:center;
+    gap:4px;
+    padding:2px 5px;
+    flex-shrink:0;
+    border-bottom:1.5px solid #000;
+  }
+  .lbl-banner-text{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:6pt;font-weight:900;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:#000;line-height:1.3;
+    text-align:left;
+  }
+  .lbl-banner-text .nfs{
+    font-size:5pt;color:#c0392b;font-weight:800;letter-spacing:.06em;
+    display:block;
+  }
+
+  /* PRODUCT STRIP */
+  .lbl-product{
+    background:#fff;color:#000;
+    text-align:center;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:7.5pt;font-weight:900;
+    letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 4px;line-height:1.2;
+    flex-shrink:0;
+    border-bottom:1.5px solid #000;
+  }
+
+  /* DELIVERY + TRUCK STRIP */
+  .lbl-prog{
+    background:#f0f0f0;color:#000;
+    text-align:center;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5.5pt;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 4px;line-height:1;
+    flex-shrink:0;
+    border-bottom:1px solid #bbb;
+  }
+
+  /* DROP-OFF */
+  .lbl-dropoff{
+    padding:2px 6px 1px;
+    border-bottom:1px solid #ccc;
+    flex-shrink:0;
+    background:#f8f8f8;
+  }
+  .do-eyebrow{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;font-weight:700;
+    text-transform:uppercase;letter-spacing:.1em;color:#555;
+    line-height:1;
+  }
+  .do-name{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:7.5pt;font-weight:800;
+    text-transform:uppercase;color:#000;
+    line-height:1.1;
+  }
+
+  /* SCHOOL — center hero */
+  .lbl-school{
+    flex:1;
+    display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    padding:2px 5px;
+    text-align:center;
+    border-bottom:1px solid #000;
+    min-height:0;
+  }
+  .sch-eyebrow{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;font-weight:700;
+    text-transform:uppercase;letter-spacing:.1em;color:#555;
+    line-height:1;
+  }
+  .sch-name{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:15pt;font-weight:900;
+    text-transform:uppercase;
+    color:#000;line-height:1.05;
+  }
+  .sch-allot{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;color:#555;font-weight:600;
+    margin-top:1px;line-height:1.2;
+  }
+
+  /* QUANTITY BAR */
+  .lbl-qty{
+    display:flex;align-items:stretch;
+    flex-shrink:0;
+    background:#fff;color:#000;border-top:1.5px solid #000;
+  }
+  .qty-main{
+    flex:1;
+    display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    padding:4px 3px;
+    border-right:1px solid #ccc;
+    background:#f0f0f0;
+  }
+  .qty-num{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:17pt;font-weight:900;
+    color:#000;line-height:1;
+  }
+  .qty-unit{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5.5pt;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:#333;
+  }
+  .qty-side{
+    display:flex;flex-direction:column;
+    justify-content:center;
+    padding:3px 6px;
+    text-align:right;
+    min-width:46px;
+    background:#fff;
+  }
+  .qty-boxlabel{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:7.5pt;font-weight:900;
+    text-transform:uppercase;color:#000;
+  }
+  .qty-of{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;font-weight:600;color:#555;
+  }
+  .qty-loose-note{
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;font-weight:700;color:#333;
+  }
+
+  /* Corner badge */
+  .corner-badge{
+    position:absolute;top:0;right:0;
+    background:#000;color:#fff;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:5pt;font-weight:800;
+    text-transform:uppercase;letter-spacing:.05em;
+    padding:1px 5px;
+    border-bottom-left-radius:2px;
+    border-left:1px solid #333;
+    border-bottom:1px solid #333;
+    line-height:1.4;
+  }
+
+  /* LOOSE — dashed border */
+  .lbl.loose{ border-style:dashed;border-color:#555; }
+  .lbl.loose .lbl-banner{background:#f5f5f5;border-bottom-color:#555;}
+  .lbl.loose .lbl-qty{background:#f5f5f5;border-top:1.5px dashed #555;}
+  .lbl.loose .qty-main{background:#f5f5f5;}
+  .lbl.loose .corner-badge{background:#333;color:#fff;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .controls,.tab-bar,.tab-header{display:none;}
+    .tab-section{display:none!important;}
+    .tab-section.printing{display:block!important;}
+    .page{margin:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <span>🍋 SBFP Calamansi Juice Labels 2026</span>
+  <select id="selDelivery" onchange="buildTabs()">
+    <option value="summer">☀️ Summer Feeding Program 2026</option>
+    <option value="double">📦 5th &amp; 6th Delivery 2026</option>
+  </select>
+  <select id="selTruck" onchange="buildTabs()">
+    <option value="all">All Trucks</option>
+    <option value="t1">Truck 1 — West Coast</option>
+    <option value="t2">Truck 2 — East Coast</option>
+    <option value="t3">Truck 3 — City Route</option>
+  </select>
+  <span style="color:#7bc97e;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;">
+    📦 Pcs/Case:
+  </span>
+  <input id="caseSize" type="number" min="1" max="9999" value="100"
+    style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+    width:70px;padding:5px 8px;border-radius:4px;border:1px solid #2d6b2d;
+    background:#0d2b0d;color:#fff;text-align:center;"
+    onkeydown="if(event.key==='Enter')buildTabs()"/>
+  <button onclick="buildTabs()" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:6px 14px;border-radius:4px;border:2px solid #7bc97e;cursor:pointer;background:#163316;color:#7bc97e;">✓ Apply</button>
+  <select id="selPrintScope" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:6px 12px;border-radius:4px;border:1px solid #2d6b2d;cursor:pointer;background:#0d2b0d;color:#fff;">
+    <option value="active">🖨 Print — Active Tab Only</option>
+    <option value="truck">🖨 Print — Active Truck (All Drops)</option>
+    <option value="all">🖨 Print — All Trucks (Everything)</option>
+  </select>
+  <button onclick="doPrint()">🖨 Print</button>
+  <span class="ctrl-stat" id="stat"></span>
+</div>
+
+<div class="tab-bar" id="tabBar"></div>
+<div id="pages"></div>
+
+<script>
+function getCase() {
+  const v = parseInt(document.getElementById('caseSize').value, 10);
+  return (v && v > 0) ? v : 100;
+}
+
+const SUMMER = [
+  {id:'t1',label:'Truck 1',route:'West Coast',drops:[
+    {drop:'Talisayan ES',dn:1,schools:[
+      {n:'Anuling ES',q:247},{n:'Mt. View ES',q:87},{n:'Pamucutan ES',q:384},
+      {n:'Cadalagan ES',q:220},{n:'Camp Susana ES',q:414},{n:'Datu Panguluhan ES',q:179},
+      {n:'Pole Diutay ES',q:85},{n:'Pole Grande ES',q:26},{n:'San Ramon ES',q:182},
+      {n:'Talisayan ES',q:178}
+    ]},
+    {drop:'Patalon ES',dn:2,schools:[
+      {n:'Patalon ES',q:667},{n:'Montecentral PS Extension',q:83},{n:'Sinubong ES',q:280}
+    ]},
+    {drop:'Labuan CS',dn:3,schools:[
+      {n:'Campo Uno PS',q:62},{n:'Labuan CS',q:1953},{n:'Latap ES',q:43},
+      {n:'Latap ES – Lacumba Annex',q:42},{n:'Latap ES – Cabonegro Annex',q:54},{n:'Limpapa ES',q:91}
+    ]},
+    {drop:'Ayala CS',dn:4,schools:[{n:'Ayala CS',q:559}]},
+    {drop:'Recodo ES',dn:5,schools:[{n:'Recodo ES',q:415}]},
+    {drop:'Cawit ES',dn:6,schools:[
+      {n:'Baluno ES',q:118},{n:'Cawit ES',q:230},{n:'Lima ES',q:33},
+      {n:'Tulungatung ES',q:560},{n:'Zambame ES',q:16},{n:'Cabigan ES',q:34},{n:'Maasin LC',q:76}
+    ]},
+    {drop:'Sinunuc ES',dn:7,schools:[{n:'Sinunuc ES',q:671},{n:'Sto. Niño ES',q:28}]},
+    {drop:'Baliwasan CS',dn:8,schools:[
+      {n:'Baliwasan CS',q:388},{n:'San Jose Gusu ES',q:406},{n:'Southcom ES',q:371},
+      {n:'Capisan ES',q:49},{n:'Malagutay ES',q:45},
+      {n:'Southern Support Comm. ES',q:173},{n:'John Spirig Sr. Memorial ES',q:559}
+    ]},
+    {drop:'Sta. Maria CS',dn:9,schools:[
+      {n:'EAAB ES',q:79},{n:'Sta. Maria CS',q:875},{n:'Cabatangan ES',q:136}
+    ]},
+    {drop:'Catalina Vda. de Jalon MS',dn:10,schools:[
+      {n:'Catalina Vda. de Jalon MS',q:485}
+    ]},
+  ]},
+  {id:'t2',label:'Truck 2',route:'East Coast',drops:[
+    {drop:'Vitali CS',dn:1,schools:[
+      {n:'Bincul ES',q:63},{n:'Dr. Manuel Diaz MES',q:99},{n:'Linduman ES',q:28},
+      {n:'Mangusu IS',q:18},{n:'Matiti ES',q:18},{n:'Mulawin ES',q:74},
+      {n:'Sibuktok ES',q:32},{n:'Sibuktok PS Annex',q:27},{n:'Tagpangi ES',q:24},
+      {n:'Sta. Fe Extension',q:10},{n:'Tamion ES',q:11},{n:'Taloptap ES',q:35},
+      {n:'Tindalo ES',q:216},{n:'Vitali CS',q:202}
+    ]},
+    {drop:'Tictapul ES',dn:2,schools:[
+      {n:'Bermuda ES',q:9},{n:'Licomo IS',q:45},{n:'Limaong ES',q:36},
+      {n:'Malanta ES',q:80},{n:'Matarling ES',q:14},{n:'Sinoropan ES',q:72},
+      {n:'Talaga ES',q:72},{n:'Tarlago ES',q:46},{n:'Tictapul ES',q:97},
+      {n:'Tigui ES',q:18},{n:'Tumitus ES',q:79}
+    ]},
+    {drop:'Tagasilay ES',dn:3,schools:[
+      {n:'Davuy ES',q:70},{n:'Merloquet ES',q:47},{n:'Sibulao ES',q:125},
+      {n:'Tagasilay ES',q:203},{n:'Taguiti ES',q:16},{n:'Tigbalabag ES',q:52}
+    ]},
+    {drop:'Curuan CS',dn:4,schools:[
+      {n:'Bagacay ES',q:38},{n:'Camp Pilar ES',q:49},{n:'Cansilayan ES',q:85},
+      {n:'Cristino M. Paragas MES',q:88},{n:'Curuan CS',q:496},{n:'Dita ES',q:63},
+      {n:'Mina ES',q:40},{n:'Lubigan ES',q:31},{n:'Natividad Medalle PES',q:68},
+      {n:'Panubigan ES',q:102},{n:'Sapa Manok ES',q:27},{n:'Sibutat ES',q:25},
+      {n:'Upper Masaba ES',q:18}
+    ]},
+    {drop:'Buenavista IS',dn:5,schools:[
+      {n:'Buenavista IS',q:406},{n:'Calabasa ES',q:53},{n:'Latuan ES',q:60},
+      {n:'Marangan ES',q:28},{n:'Muti ES',q:68},{n:'Niyog-Niyog ES',q:66},
+      {n:'Sapa Dulian ES',q:20},{n:'Sapa Moro ES',q:48},{n:'Simanta ES',q:9}
+    ]},
+    {drop:'Manicahan CS',dn:6,schools:[
+      {n:'Magsaysay ES',q:147},{n:'Manicahan CS',q:402},{n:'Manicahan Pob. ES',q:495},
+      {n:'Poso ES',q:43},{n:'Victoria ES',q:358}
+    ]},
+    {drop:'Sangali ES',dn:7,schools:[
+      {n:'Bolong ES',q:116},{n:'Don FOCS MES',q:40},{n:'Mangga ES',q:58},
+      {n:'Pasilmanta ES',q:300},{n:'Sangali ES',q:243},{n:'Sinunuk ES',q:38},
+      {n:'Siguinan ES',q:73},{n:'Tumalutab ES',q:165}
+    ]},
+    {drop:'Bunguiao ES',dn:8,schools:[
+      {n:'Bunguiao ES',q:145},{n:'Camp Socorro ES',q:30},{n:'Dulian ES',q:33},
+      {n:'Eligna ES',q:7},{n:'Nangka ES',q:14},{n:'Sapa Seco ES',q:30},
+      {n:'Shigeru ES',q:54},{n:'Udjung ES',q:14},{n:'Baluno ES',q:24}
+    ]},
+    {drop:'Mercedes CS',dn:9,schools:[
+      {n:'Buenakapok ES',q:70},{n:'Imelda ES',q:88},{n:'Lanote ES',q:31},
+      {n:'Lanzones ES',q:51},{n:'Lumbayao ES',q:59},{n:'Mercedes CS',q:439},
+      {n:'Mulu-Muluan ES',q:184},{n:'Pangulayan ES',q:29},{n:'Tolosa ES',q:44}
+    ]},
+    {drop:'Taluksangay ES',dn:10,schools:[
+      {n:'Busay ES',q:111},{n:'Landang Laum ES',q:105},{n:'Talabaan ES',q:247},
+      {n:'Taluksangay ES',q:131},{n:'Tuan Datu Hanis',q:42}
+    ]},
+    {drop:'Culianan LC',dn:11,schools:[
+      {n:'Cabaluay ES',q:159},{n:'Cabaluay Vida Vista ES',q:21},{n:'Cacao ES',q:43},
+      {n:'Culianan LC',q:223},{n:'Guisao ES',q:72},{n:'Islamia ES',q:58},
+      {n:'Lapakan ES',q:40},{n:'Nangka ES',q:14}
+    ]},
+    {drop:'Putik CS',dn:12,schools:[
+      {n:'Divisoria ES',q:243},{n:'Lunzuran ES',q:199},{n:'Putik CS',q:252}
+    ]},
+    {drop:'Boalan ES',dn:13,schools:[
+      {n:'Balunu ES',q:76},{n:'Boalan ES',q:444},{n:'Lugakit ES',q:15},
+      {n:'Lumayang ES',q:208},{n:'Lumbangan ES',q:132},{n:'Pasobolong IS',q:217},
+      {n:'Salaan ES',q:56},{n:'Zambowood ES',q:513}
+    ]},
+  ]},
+  {id:'t3',label:'Truck 3',route:'City Route',drops:[
+    {drop:'Zamboanga CS',dn:1,schools:[
+      {n:'Canelar IS',q:150},{n:'Zamboanga CS',q:515}
+    ]},
+    {drop:'Sta. Barbara CS',dn:2,schools:[
+      {n:'Mariki ES',q:101},{n:'Rio Hondo ES',q:322},{n:'Sta. Barbara CS',q:278}
+    ]},
+    {drop:'Tetuan CS',dn:3,schools:[
+      {n:'Guiwan ES',q:92},{n:'Tetuan CS',q:420}
+    ]},
+    {drop:'DGEMS',dn:4,schools:[
+      {n:'Bihing Tahik PS',q:130},{n:'DGEMS',q:600}
+    ]},
+    {drop:'Tugbungan ES',dn:5,schools:[{n:'Tugbungan ES',q:484}]},
+    {drop:'San Roque ES',dn:6,schools:[
+      {n:'Salum ES',q:143},{n:'San Roque ES',q:602}
+    ]},
+    {drop:'Pasonanca ES',dn:7,schools:[
+      {n:'Bandera ES',q:22},{n:'Dulian ES',q:17},{n:'Luyahan ES',q:46},
+      {n:'Muruk ES',q:12},{n:'Pasonanca ES',q:502},{n:'Upper Pasonanca ES',q:128}
+    ]},
+    {drop:'Talon-Talon ES',dn:8,schools:[{n:'Talon-Talon ES',q:488}]},
+    {drop:'Mampang ES',dn:9,schools:[{n:'Mampang ES',q:488}]},
+    {drop:'Arena Blanco ES',dn:10,schools:[
+      {n:'Arena Blanco East ES',q:490},{n:'Arena Blanco West ES',q:150},
+      {n:'Landang Gua ES',q:82},{n:'Manalipa IS',q:35},
+      {n:'Pangapuyan ES',q:33},{n:'Panganak ES',q:200},{n:'Tigtabon ES',q:489}
+    ]},
+  ]},
+];
+
+const DOUBLE = [
+  {id:'t1',label:'Truck 1',route:'West Coast',drops:[
+    {drop:'Talisayan ES',dn:1,schools:[
+      {n:'Anuling ES',q:310},{n:'Cadalagan ES',q:464},{n:'Camp Susana ES',q:348},
+      {n:'Datu Panguluhan ES',q:132},{n:'Pamucutan ES',q:498},{n:'Pole Diutay ES',q:148},
+      {n:'Pole Grande ES',q:86},{n:'San Ramon ES',q:288},{n:'Talisayan ES',q:620}
+    ]},
+    {drop:'Patalon ES',dn:2,schools:[
+      {n:'Mt. View ES',q:136},{n:'Patalon ES',q:918},
+      {n:'Montecentral ES',q:106},{n:'Sinubong ES',q:320}
+    ]},
+    {drop:'Labuan CS',dn:3,schools:[
+      {n:'Cabonegro PS',q:188},{n:'Lacumba PS',q:156},{n:'Latap ES',q:214},
+      {n:'Labuan CS',q:2092},{n:'Limpapa ES',q:422},{n:'Campo Uno PS',q:172}
+    ]},
+    {drop:'Ayala CS',dn:4,schools:[{n:'Ayala Central',q:2160}]},
+    {drop:'Recodo ES',dn:5,schools:[{n:'Recodo ES',q:2060}]},
+    {drop:'Cawit ES',dn:6,schools:[
+      {n:'Cawit ES',q:816},{n:'Baluno ES',q:220},{n:'Lima ES',q:64},
+      {n:'Tulungatung ES',q:1142},{n:'Zambame ES',q:72}
+    ]},
+    {drop:'Sinunuc ES',dn:7,schools:[
+      {n:'Cabigan ES',q:212},{n:'Maasin Learning Center',q:634},
+      {n:'Sto. Niño ES',q:148},{n:'Sinunuc ES',q:1614}
+    ]},
+    {drop:'Baliwasan CS',dn:8,schools:[
+      {n:'Capisan ES',q:232},{n:'Malagutay ES',q:454},{n:'SCC ES',q:1114},
+      {n:'John Spirig Sr. MES',q:988},{n:'San Jose Gusu ES',q:962},
+      {n:'Southcom ES',q:1746},{n:'Baliwasan CS',q:1048}
+    ]},
+    {drop:'Sta. Maria CS',dn:9,schools:[
+      {n:'Cabatangan ES',q:516},{n:'EAAB Elem. School',q:366},{n:'Sta. Maria CS',q:1416}
+    ]},
+    {drop:'Catalina Vda. de Jalon MS',dn:10,schools:[
+      {n:'Catalina Vda. de Jalon MS',q:1508}
+    ]},
+  ]},
+  {id:'t2',label:'Truck 2',route:'East Coast',drops:[
+    {drop:'Vitali CS',dn:1,schools:[
+      {n:'Bincul ES',q:162},{n:'Dr. Diaz MES',q:232},{n:'Linduman ES',q:194},
+      {n:'Mangusu IS',q:252},{n:'Matiti ES',q:90},{n:'Mulawin ES',q:162},
+      {n:'Sibuktok (Annex)',q:122},{n:'Sibuktok ES',q:270},{n:'Tagpangi ES',q:96},
+      {n:'Sta. Fe (Annex)',q:98},{n:'Tamion ES',q:98},{n:'Taloptap ES',q:244},
+      {n:'Tindalo ES',q:142},{n:'Vitali CS',q:538}
+    ]},
+    {drop:'Tagasilay ES',dn:2,schools:[
+      {n:'Davuy ES',q:196},{n:'Merloquet ES',q:82},{n:'Sibulao ES',q:190},
+      {n:'Tagasilay ES',q:562},{n:'Taguiti ES',q:170},{n:'Tigbalabag ES',q:206}
+    ]},
+    {drop:'Tictapul ES',dn:3,schools:[
+      {n:'Bermuda ES',q:58},{n:'Licomo ES',q:272},{n:'Limaong ES',q:248},
+      {n:'Malanta ES',q:108},{n:'Matarling ES',q:50},{n:'Sinoropan ES',q:200},
+      {n:'Talaga ES',q:132},{n:'Tarlago ES',q:138},{n:'Tictapul ES',q:494},
+      {n:'Tigui ES',q:130},{n:'Tumitus ES',q:356}
+    ]},
+    {drop:'Curuan CS',dn:4,schools:[
+      {n:'Bagacay ES',q:66},{n:'Camp Pilar ES',q:118},{n:'Cansilayan ES',q:92},
+      {n:'Cristino Paragas MES',q:392},{n:'Curuan CS',q:768},{n:'Dita ES',q:370},
+      {n:'Lubigan ES',q:306},{n:'Mina ES',q:172},{n:'Panubigan ES',q:196},
+      {n:'Natividad Medalle PES',q:148},{n:'Sapa Manok ES',q:86},
+      {n:'Sibutat ES',q:140},{n:'Upper Masaba ES',q:46}
+    ]},
+    {drop:'Buenavista IS',dn:5,schools:[
+      {n:'Buenavista IS',q:708},{n:'Calabasa ES',q:232},{n:'Latuan ES',q:128},
+      {n:'Marangan ES',q:186},{n:'Muti ES',q:190},{n:'Niyog-Niyog ES',q:244},
+      {n:'Sapa Dulian ES',q:108},{n:'Sapa Moro ES',q:176},{n:'Simanta ES',q:84}
+    ]},
+    {drop:'Manicahan CS',dn:6,schools:[
+      {n:'Magsaysay ES',q:244},{n:'Manicahan CS',q:524},{n:'Manicahan Pob. ES',q:872},
+      {n:'Poso ES',q:164},{n:'Victoria ES',q:598}
+    ]},
+    {drop:'Sangali ES',dn:7,schools:[
+      {n:'Bolong ES',q:538},{n:'Don FOCS MES',q:182},{n:'Mangga ES',q:228},
+      {n:'Pasilmanta ES',q:592},{n:'Sangali ES',q:2298},{n:'Siguinan ES',q:128},
+      {n:'Sinunuk ES',q:134},{n:'Tumalutab ES',q:708}
+    ]},
+    {drop:'Mercedes CS',dn:8,schools:[
+      {n:'Buenakapok ES',q:198},{n:'Imelda ES',q:140},{n:'Lanote ES',q:70},
+      {n:'Lanzones ES',q:98},{n:'Lumbayao ES',q:86},{n:'Mercedes CS',q:1074},
+      {n:'Mulu-Muluan ES',q:428},{n:'Pangulayan ES',q:294},{n:'Tolosa ES',q:72}
+    ]},
+    {drop:'Culianan LC',dn:9,schools:[
+      {n:'Cabaluay ES',q:512},{n:'Vda Vista ES',q:120},{n:'Cacao ES',q:110},
+      {n:'Culianan LC',q:546},{n:'Guisao ES',q:142},{n:'Islamia ES',q:208},
+      {n:'Lapakan ES',q:120},{n:'Nangka ES',q:118}
+    ]},
+    {drop:'Putik CS',dn:10,schools:[
+      {n:'Putik CS',q:1282},{n:'Divisoria ES',q:632},{n:'Lunzuran ES',q:506}
+    ]},
+    {drop:'Boalan ES',dn:11,schools:[
+      {n:'Balunu ES',q:106},{n:'Boalan ES',q:1132},{n:'Lugakit ES',q:15},
+      {n:'Lumayang ES',q:128},{n:'Lumbangan ES',q:514},{n:'Pasobolong IS',q:614},
+      {n:'Salaan ES',q:266},{n:'Zambowood ES',q:966}
+    ]},
+  ]},
+  {id:'t3',label:'Truck 3',route:'City Route',drops:[
+    {drop:'Zamboanga CS',dn:1,schools:[
+      {n:'Canelar ES',q:658},{n:'Zamboanga CS',q:1492}
+    ]},
+    {drop:'Sta. Barbara CS',dn:2,schools:[
+      {n:'Mariki ES',q:802},{n:'Rio Hondo ES',q:568},
+      {n:'Sta. Barbara CS',q:1494},{n:'Bihing Tahik PS',q:726}
+    ]},
+    {drop:'DGEMS',dn:3,schools:[{n:'DGEMS',q:2264}]},
+    {drop:'Tugbungan ES',dn:4,schools:[{n:'Tugbungan ES',q:1972}]},
+    {drop:'Pasonanca ES',dn:5,schools:[
+      {n:'Bandera ES',q:104},{n:'Dulian ES',q:104},{n:'Luyahan ES',q:460},
+      {n:'Muruk ES',q:42},{n:'Pasonanca ES',q:732},{n:'Upper Pasonanca ES',q:224}
+    ]},
+    {drop:'San Roque ES',dn:6,schools:[
+      {n:'Salum ES',q:524},{n:'San Roque ES',q:1630}
+    ]},
+    {drop:'Taluksangay ES',dn:7,schools:[
+      {n:'Busay ES',q:316},{n:'Landang Laum ES',q:210},{n:'Talabaan ES',q:760},
+      {n:'Taluksangay ES',q:710},{n:'Tuan Datu HAN IS',q:520}
+    ]},
+    {drop:'Bunguiao ES',dn:8,schools:[
+      {n:'Baluno ES',q:58},{n:'Bunguiao ES',q:550},{n:'Camp Socorro ES',q:78},
+      {n:'Dulian ES',q:96},{n:'Eligna ES',q:64},{n:'Nangka ES',q:72},
+      {n:'Sapa Seco ES',q:116},{n:'Shigeru ES',q:154},{n:'Udjung ES',q:68}
+    ]},
+    {drop:'Mampang ES',dn:9,schools:[{n:'Mampang ES',q:1740}]},
+    {drop:'Talon-Talon CS',dn:10,schools:[{n:'Talon-Talon CS',q:2852}]},
+    {drop:'Arena Blanco ES',dn:11,schools:[
+      {n:'Arena Blanco East ES',q:1446},{n:'Arena Blanco West ES',q:730},
+      {n:'Tigtabon ES',q:548},{n:'Pangapuyan ES',q:244},
+      {n:'Landang Gua ES',q:530},{n:'Manalipa IS',q:224},{n:'Panganak ES',q:156}
+    ]},
+  ]},
+];
+
+function buildDropLabels(drop, truck, progTag) {
+  const CASE = getCase();
+  const out = [];
+  drop.schools.forEach(s => {
+    if (s.q <= 0) return;
+    const full = Math.floor(s.q / CASE);
+    const loose = s.q % CASE;
+    const total = full + (loose > 0 ? 1 : 0);
+    for (let b = 1; b <= full; b++) {
+      out.push({ type:'full', prog:progTag, truck:truck.label, route:truck.route,
+        drop:drop.drop, dn:drop.dn, school:s.n, qty:CASE,
+        boxNum:b, totalBoxes:total, full, loose, schoolTotal:s.q, caseSize:CASE });
+    }
+    if (loose > 0) {
+      out.push({ type:'loose', prog:progTag, truck:truck.label, route:truck.route,
+        drop:drop.drop, dn:drop.dn, school:s.n, qty:loose,
+        boxNum:full+1, totalBoxes:total, full, loose, schoolTotal:s.q, caseSize:CASE });
+    }
+  });
+  return out;
+}
+
+function makeLbl(l) {
+  const isLoose = l.type === 'loose';
+  const progLine = l.prog === 'summer'
+    ? 'Summer Feeding Program 2026'
+    : '5th &amp; 6th Delivery 2026';
+  const allot = `${l.schoolTotal.toLocaleString()} pcs total · ${l.full} case${l.full!==1?'s':''}${l.loose>0?' + '+l.loose+' pcs loose':''}`;
+
+  return `<div class="lbl${isLoose?' loose':''}">
+    <div class="corner-badge">${isLoose ? 'LOOSE' : l.boxNum+'/'+l.totalBoxes}</div>
+    <div class="lbl-banner">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 38" width="54" height="17" style="flex-shrink:0">
+        <!-- "Dep" in blue -->
+        <text x="0" y="30" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="32" fill="#1a3a8f" letter-spacing="-1">D</text>
+        <text x="22" y="30" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="32" fill="#1a3a8f" letter-spacing="-1">e</text>
+        <!-- p body without vertical stem (torch replaces it) -->
+        <text x="40" y="30" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="32" fill="#1a3a8f" letter-spacing="-1">p</text>
+        <!-- "ED" in red -->
+        <text x="60" y="30" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="32" fill="#c0392b" letter-spacing="-1">E</text>
+        <text x="82" y="30" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="32" fill="#c0392b" letter-spacing="-1">D</text>
+        <!-- Torch flame over the p stem -->
+        <ellipse cx="50" cy="7" rx="3.5" ry="5" fill="#f9a825" opacity=".95"/>
+        <ellipse cx="50" cy="9" rx="2" ry="3.5" fill="#e65100"/>
+        <ellipse cx="50" cy="6" rx="1.5" ry="3" fill="#fff176"/>
+      </svg>
+      <div class="lbl-banner-text">
+        SBFP · Republic of the Philippines
+        <span class="nfs">NOT FOR SALE</span>
+      </div>
+    </div>
+    <div class="lbl-product">Calamansi Juice — ${l.caseSize} pcs / case</div>
+    <div class="lbl-prog">${progLine} &nbsp;·&nbsp; ${l.truck} — ${l.route}</div>
+    <div class="lbl-dropoff">
+      <div class="do-eyebrow">Drop-off #${l.dn}</div>
+      <div class="do-name">${l.drop}</div>
+    </div>
+    <div class="lbl-school">
+      <div class="sch-eyebrow">Recipient School</div>
+      <div class="sch-name">${l.school}</div>
+      <div class="sch-allot">${allot}</div>
+    </div>
+    <div class="lbl-qty">
+      <div class="qty-main">
+        <div class="qty-num">${l.qty.toLocaleString()}</div>
+        <div class="qty-unit">pcs · ${isLoose?'loose':'full case'}</div>
+      </div>
+      <div class="qty-side">
+        <div class="qty-boxlabel">${isLoose?'LOOSE':'CASE '+l.boxNum}</div>
+        <div class="qty-of">of ${l.totalBoxes}</div>
+        ${l.loose>0?`<div class="qty-loose-note">+${l.loose} loose</div>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildTabs() {
+  const CASE = getCase();
+  const delivery = document.getElementById('selDelivery').value;
+  const truckFilter = document.getElementById('selTruck').value;
+  const trucks = delivery === 'summer' ? SUMMER : DOUBLE;
+  const progTag = delivery === 'summer' ? 'summer' : 'double';
+  const progLabel = delivery === 'summer' ? 'Summer Feeding 2026' : '5th & 6th Delivery 2026';
+
+  // Build tab buttons grouped by truck
+  const tabBar = document.getElementById('tabBar');
+  tabBar.innerHTML = '';
+
+  const container = document.getElementById('pages');
+  container.innerHTML = '';
+
+  let totalLabels = 0;
+  let firstTabSet = false;
+
+  trucks.forEach(truck => {
+    if (truckFilter !== 'all' && truck.id !== truckFilter) return;
+
+    // Truck group row
+    const group = document.createElement('div');
+    group.className = `truck-group ${truck.id}`;
+
+    const lbl = document.createElement('span');
+    lbl.className = 'truck-label';
+    lbl.textContent = `🚛 ${truck.label} — ${truck.route}`;
+    group.appendChild(lbl);
+
+    truck.drops.forEach((d, dIdx) => {
+      const globalIdx = `${truck.id}-${dIdx}`;
+      const tabId = `tab-${globalIdx}`;
+      const labels = buildDropLabels(d, truck, progTag);
+      totalLabels += labels.length;
+
+      const isFirst = !firstTabSet;
+      if (isFirst) firstTabSet = true;
+
+      // Tab button
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn' + (isFirst ? ' active' : '');
+      btn.textContent = `#${d.dn} ${d.drop}`;
+      btn.title = `${truck.label} · ${labels.length} labels`;
+      btn.dataset.tabid = tabId;
+      btn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('visible'));
+        document.getElementById(tabId).classList.add('visible');
+      };
+      group.appendChild(btn);
+
+      // Tab section
+      const section = document.createElement('div');
+      section.className = 'tab-section' + (isFirst ? ' visible' : '');
+      section.id = tabId;
+
+      const totalQ = d.schools.reduce((a,s) => a+s.q, 0);
+      const fullCases = Math.floor(totalQ / CASE);
+      const looseRem = totalQ % CASE;
+
+      // Build school rows for info table
+      const schoolRows = d.schools.map((s,i) => {
+        const sf = Math.floor(s.q / CASE);
+        const sl = s.q % CASE;
+        return `<tr>
+          <td>${i+1}</td>
+          <td>${s.n}</td>
+          <td class="num">${s.q.toLocaleString()}</td>
+          <td class="cases">${sf > 0 ? sf+' case'+(sf!==1?'s':'') : '—'}</td>
+          <td class="loose-cell">${sl > 0 ? sl+' pcs' : '—'}</td>
+        </tr>`;
+      }).join('');
+
+      const infoId = `info-${tabId}`;
+      section.innerHTML = `<div class="tab-header">
+        <span>🍋 Drop-off #${d.dn}: ${d.drop}</span>
+        &nbsp;·&nbsp; ${truck.label} — ${truck.route}
+        &nbsp;·&nbsp; ${progLabel}
+        &nbsp;·&nbsp; <span>${d.schools.length} school${d.schools.length!==1?'s':''}</span>
+        &nbsp;·&nbsp; ${totalQ.toLocaleString()} pcs total
+        &nbsp;·&nbsp; <span>${fullCases} full cases${looseRem>0?' + '+looseRem+' pcs loose':''}</span>
+        &nbsp;·&nbsp; ${labels.length} labels · ${Math.ceil(labels.length/8)} page${Math.ceil(labels.length/8)!==1?'s':''}
+        &nbsp;&nbsp;<button onclick="printActiveTab()" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 12px;border-radius:3px;border:2px solid #4caf50;cursor:pointer;background:#4caf50;color:#fff;">🖨 This Tab</button>
+        <button onclick="doPrint('truck')" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 12px;border-radius:3px;border:2px solid #1e88e5;cursor:pointer;background:#1e88e5;color:#fff;">🚛 This Truck</button>
+        <button onclick="doPrint('all')" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 12px;border-radius:3px;border:2px solid #ab47bc;cursor:pointer;background:#ab47bc;color:#fff;">📦 All Trucks</button>
+      </div>
+      <div class="drop-info">
+        <button class="drop-info-toggle" onclick="toggleInfo('${infoId}')">▶ Show School Breakdown — ${d.schools.length} schools · ${totalQ.toLocaleString()} pcs · ${fullCases} cases${looseRem>0?' + '+looseRem+' loose':''}</button>
+        <div class="drop-info-table-wrap" id="${infoId}">
+          <table class="drop-info-table">
+            <thead><tr>
+              <th>#</th>
+              <th>School</th>
+              <th class="num">Qty (pcs)</th>
+              <th class="num">Full Cases</th>
+              <th class="num">Loose</th>
+            </tr></thead>
+            <tbody>${schoolRows}</tbody>
+            <tfoot><tr class="total-row">
+              <td colspan="2">TOTAL — ${d.schools.length} schools</td>
+              <td class="num">${totalQ.toLocaleString()} pcs</td>
+              <td class="cases">${fullCases} case${fullCases!==1?'s':''}</td>
+              <td class="loose-cell">${looseRem>0?looseRem+' pcs':'—'}</td>
+            </tr></tfoot>
+          </table>
+        </div>
+      </div>`;
+
+      for (let i = 0; i < labels.length; i += 8) {
+        const page = document.createElement('div');
+        page.className = 'page';
+        for (let j = i; j < Math.min(i+8, labels.length); j++) {
+          page.innerHTML += makeLbl(labels[j]);
+        }
+        section.appendChild(page);
+      }
+
+      container.appendChild(section);
+    });
+
+    tabBar.appendChild(group);
+  });
+
+  document.getElementById('stat').textContent =
+    `${document.querySelectorAll('.tab-btn').length} drop-off tabs · ${totalLabels.toLocaleString()} total labels · ${CASE} pcs/case`;
+}
+
+function toggleInfo(id) {
+  const wrap = document.getElementById(id);
+  const btn = wrap.previousElementSibling;
+  const open = wrap.classList.toggle('open');
+  btn.textContent = btn.textContent.replace(/^[▶▼]/, open ? '▼' : '▶');
+}
+
+function printActiveTab() { doPrint('active'); }
+
+function doPrint(forceScope) {
+  const scope = forceScope || document.getElementById('selPrintScope').value;
+  const allSections = document.querySelectorAll('.tab-section');
+
+  if (scope === 'active') {
+    const active = document.querySelector('.tab-section.visible');
+    if (!active) return;
+    active.classList.add('printing');
+    window.print();
+    active.classList.remove('printing');
+
+  } else if (scope === 'truck') {
+    // Find which truck the active tab belongs to — derive from its id prefix
+    const active = document.querySelector('.tab-section.visible');
+    if (!active) return;
+    // id format: tab-{truckId}-{dIdx}  e.g. tab-t1-2
+    const parts = active.id.split('-'); // ['tab','t1','2']
+    const truckId = parts[1];
+    allSections.forEach(s => {
+      if (s.id.startsWith(`tab-${truckId}-`)) s.classList.add('printing');
+    });
+    window.print();
+    allSections.forEach(s => s.classList.remove('printing'));
+
+  } else {
+    // all
+    allSections.forEach(s => s.classList.add('printing'));
+    window.print();
+    allSections.forEach(s => s.classList.remove('printing'));
+  }
+}
+
+buildTabs();
+</script>
+</body>
+</html>
